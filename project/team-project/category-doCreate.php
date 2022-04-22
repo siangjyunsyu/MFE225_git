@@ -34,6 +34,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             <div class="mb-2 col-auto">
               <label class="me-3" for="name">類別名稱</label>
             </div>
+            <input type="hidden" value="<?=$classify_id?>" name="classify_id">
             <input style="width: 10%" type="text" id="category_name" class="form-control" name="category_name" required>
           </div>
           <div class="py-2">

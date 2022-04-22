@@ -31,17 +31,12 @@ $result = $conn-> query($sql);
 $total = $result-> num_rows; //總共要幾頁
 
 $per_page = 10;
-
 $page_count = CEIL($total / $per_page);
-
 $start = ($p - 1) * $per_page;
-$sql = "SELECT * FROM classify WHERE valid=1 
-  ORDER BY $order 
-  LIMIT $start,$per_page";
 
+$sql = "SELECT * FROM classify WHERE valid=1 ORDER BY $order LIMIT $start,$per_page";
 $result = $conn->query($sql);
 $user_count = $result->num_rows;
-
 $rows = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 

@@ -1,0 +1,26 @@
+<div class="row justify-content-between py-3">
+            <div class="col-auto">
+               <a class="btn btn-info text-white">依日期排序</a>
+               <a class="btn btn-info text-white">依編號排序</a>
+               <a class="btn btn-info text-white">依數量排序</a>
+               <a class="btn btn-info text-white">依金額排序</a>
+            </div>
+            <div class="col-auto">
+               <form action="">
+                  <div class="row">
+                     <div class="col-auto">
+                        <input type="date" name="date1" class="form-control">
+                     </div>
+                     <div class="col-auto">
+                        <label class="col-form-label" for="">~</label>
+                     </div>
+                     <div class="col-auto">
+                        <input type="date" name="date2" class="form-control">
+                     </div>
+                     <div class="col-auto">
+                        <button type="submit" class="btn btn-info">查詢</button>
+                     </div>
+                  </div>
+               </form>
+            </div>
+</div>

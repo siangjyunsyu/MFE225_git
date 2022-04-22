@@ -36,13 +36,17 @@ $start = ($p - 1) * $per_page; // 最開始從最0筆資料開始,所以(頁數-
 
 $classify_id = $_GET["classify_id"];
 
-$sql = "SELECT * FROM category WHERE valid=1 AND classify_id=$classify_id
+$sql = "SELECT * FROM category WHERE valid=1 AND classify_id = $classify_id
   ORDER BY $order 
   LIMIT $start,$per_page"; //LIMIT 限制傳回的資料筆數
 
 $result = $conn->query($sql);
 $category_count = $result->num_rows;
 $rows = $result->fetch_all(MYSQLI_ASSOC);
+$total = $result->num_rows;
+$page_count = CEIL($total / $per_page);
+$start = ($p - 1) * $per_page;
+
 ?>
 
 <!doctype html>
@@ -72,60 +76,62 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
 </head>
 
 <body>
-  <div class="container">
-    <div class="text-start">
-      <a class="btn btn-info text-white me-3" href="classify.php?type=1&classify_id=<?=$classify_id?>&p=<?= $p ?>">回到總分類</a>
-    </div>
-    <div class="text-start">
-      <div class="d-flex justify-content-between" style="width: 30%;">
-        <div class="text-start my-3">
-          <a class="btn btn-info text-white me-3 <?php if ($type == 1) echo "active" ?>" href="category.php?type=1&classify_id=<?=$classify_id?>&p=<?= $p ?>">遞增</a>
-          <a class="btn btn-info text-white me-3 <?php if ($type == 2) echo "active" ?>" href="category.php?type=2&classify_id=<?=$classify_id?>&p=<?= $p ?>">遞減</a>
-          <a class="btn btn-info text-white" href="category-doCreate.php?classify_id=<?=$classify_id?>">新增類別</a>
-        </div>
-        <div class="py-2 d-flex d-inline text-end my-3">
-          共 <?= $total ?> 筆
+  <div class="container d-flex ">
+    <div class="justify-content-between mx-auto">
+      <div class="text-start">
+        <a class="btn btn-info text-white me-3 mt-3" href="classify.php?type=1&classify_id=<?= $classify_id ?>&p=<?= $p ?>">回總分類列表</a>
+      </div>
+      <div class="text-start">
+        <div class="d-flex justify-content-between">
+          <div class="text-start my-3">
+            <a class="btn btn-info text-white me-3 <?php if ($type == 1) echo "active" ?>" href="category.php?type=1&classify_id=<?= $classify_id ?>&p=<?= $p ?>">遞增</a>
+            <a class="btn btn-info text-white me-3 <?php if ($type == 2) echo "active" ?>" href="category.php?type=2&classify_id=<?= $classify_id ?>&p=<?= $p ?>">遞減</a>
+            <a class="btn btn-info text-white" href="category-doCreate.php?classify_id=<?= $classify_id ?>">新增類別</a>
+          </div>
+          <div class="py-2 d-flex d-inline text-end my-3">
+            共 <?= $total ?> 筆
+          </div>
         </div>
       </div>
-    </div>
 
-    <table class="table table-bordered text-center" style="width: 30%;">
-      <thead>
-        <tr>
-          <th>刪除</th>
-          <th>編輯</th>
-          <th>總分類ID</th>
-          <th>總分類名稱</th>
-        </tr>
-      </thead>
-      <tbody>
-        <?php if ($category_count > 0) : ?>
-          <?php
-          foreach ($rows as $row) : 
-          ?>
-            <tr class="align-middle text-center">
-            <td><a class="p-2" href='category-doDelete-program.php?id=<?= $row["id"] ?>'><i class="fa-solid fa-calendar-xmark"></i> 刪除</a></td>
-              <td><a class="p-2" href='category-edit.php?id=<?= $row["id"] ?>&classify_id=<?=$classify_id?>'><i class="fa-solid fa-pen-to-square"></i> 編輯</a></td>
-              <td><?= $row["id"] ?></td>
-              <td><?= $row["category_name"] ?></td>              
-            </tr>
-          <?php endforeach; ?>
-        <?php else : ?>
-          <?= "no data." ?>
-        <?php endif; ?>
-      </tbody>
-    </table>
-    <div class="py-2">
-      <nav aria-label="Page navigation example">
-        <ul class="pagination justify-content-center">
-          <?php for ($i = 1; $i <= $page_count; $i++) : ?>
-            <li class="page-item 
+      <table class="table table-bordered text-center">
+        <thead>
+          <tr>
+            <th>刪除</th>
+            <th>編輯</th>
+            <th>總分類ID</th>
+            <th>總分類名稱</th>
+          </tr>
+        </thead>
+        <tbody>
+          <?php if ($category_count > 0) : ?>
+            <?php
+            foreach ($rows as $row) :
+            ?>
+              <tr class="align-middle text-center">
+                <td><a class="p-2" href='category-doDelete-program.php?id=<?= $row["id"] ?>'><i class="fa-solid fa-calendar-xmark"></i> 刪除</a></td>
+                <td><a class="p-2" href='category-edit.php?id=<?= $row["id"] ?>&classify_id=<?= $classify_id ?>'><i class="fa-solid fa-pen-to-square"></i> 編輯</a></td>
+                <td><?= $row["id"] ?></td>
+                <td><?= $row["category_name"] ?></td>
+              </tr>
+            <?php endforeach; ?>
+          <?php else : ?>
+            <?= "no data." ?>
+          <?php endif; ?>
+        </tbody>
+      </table>
+      <div class="py-2">
+        <nav aria-label="Page navigation example">
+          <ul class="pagination justify-content-center">
+            <?php for ($i = 1; $i <= $page_count; $i++) : ?>
+              <li class="page-item 
                     <?php if ($i == $p) echo "active"; ?>">
-              <a class="page-link" href="category.php?p=<?= $i ?>&type=<?= $type ?>"><?= $i ?></a>
-            </li>
-          <?php endfor; ?>
-        </ul>
-      </nav>
+                <a class="page-link" href="category.php?p=<?= $i ?>&type=<?= $type ?>"><?= $i ?></a>
+              </li>
+            <?php endfor; ?>
+          </ul>
+        </nav>
+      </div>
     </div>
   </div>
   <!-- Bootstrap JavaScript Libraries -->
