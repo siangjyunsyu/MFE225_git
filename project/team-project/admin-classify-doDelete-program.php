@@ -1,15 +1,15 @@
 <?php
-    require_once("../db-connect.php");
+    require_once("../admin-db-connect.php");
 
     if(!isset($_GET["id"]))
     {
-        header("location: 404.php");
+        header("location: admin-404.php");
     }
 
     $id=$_GET["id"];
     // echo $id;
 
-    require_once("../db-connect.php");
+    require_once("../admin-db-connect.php");
 
     //SOFT DELETE
     $sql_classify="UPDATE classify SET valid=0 WHERE id='$id'";
@@ -25,4 +25,5 @@
             } 
 
     $conn->close();
+    header("location: admin-classify.php");
 ?>

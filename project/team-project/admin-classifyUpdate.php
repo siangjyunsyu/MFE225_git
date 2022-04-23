@@ -1,5 +1,5 @@
 <?php
-    require_once("../db-connect.php");
+    require_once("../admin-db-connect.php");
 
     $id=$_POST["id"];
     $classify_name=$_POST["classify_name"];
@@ -10,7 +10,7 @@
     if ($conn->query($sql) === TRUE) {
         echo "更新成功";
         $conn->close();
-        header("location: classify.php?id=".$id);
+        header("location: admin-classify.php?id=".$id);
     } else {
         echo "更新資料錯誤: " . $conn->error;
         exit;

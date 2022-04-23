@@ -1,5 +1,5 @@
 <?php
-    require_once("../db-connect.php"); 
+    require_once("../admin-db-connect.php");
 
     if(!isset($_POST["classify_name"]))
     {
@@ -32,5 +32,5 @@
         
         $conn->close();
 
-        header("location: classify.php");
+        header("location: admin-classify.php");
 ?>

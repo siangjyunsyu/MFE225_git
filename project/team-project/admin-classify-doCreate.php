@@ -1,5 +1,5 @@
 <?php
-require_once("../db-connect.php");
+require_once("../admin-db-connect.php");
 
 // 所有使用者
 $sql = "SELECT * FROM classify WHERE id=1";
@@ -26,7 +26,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
   <?php if ($user_count > 0) : ?>
     <?php foreach ($rows as $row) : ?>
       <div class="container">
-        <form action="classify-doCreate-program.php" method="post">
+        <form action="admin-classify-doCreate-program.php" method="post">
           <div class="d-flex mt-3">
             <div class="mb-2 col-auto">
               <label class="me-3" for="name">總分類名稱</label>
@@ -34,8 +34,8 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
             <input style="width: 10%" type="text" id="classify_name" class="form-control" name="classify_name" required>
           </div>
           <div class="py-2">
-            <button type="submit" class="btn btn-info text-white me-3">
-              <a href="classify.php?id=<?= $row["id"] ?>">取消新增</a></button>
+            <button type="submit" class="me-3 btn btn-info">
+              <a class="text-decoration-none  text-white" href="admin-classify.php?id=<?= $row["id"] ?>">取消新增</a></button>
             <button type="submit" class="btn btn-info text-white">儲存</button>
           </div>
         </form>

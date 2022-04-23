@@ -1,5 +1,5 @@
 <?php
-require_once("../db-connect.php");
+require_once("../admin-db-connect.php");
 
 if (!isset($_GET["p"])) { // p是指page
   $p = 1;
@@ -26,14 +26,15 @@ switch ($type) {
 // ASC:升冪、DESC:降冪
 
 // 所有使用者
-$sql = "SELECT * FROM category WHERE valid=1"; //修改成你要的SQL語法,WHERE:選取匹配指定條件的數據
+$classify_id = $_GET["classify_id"];
+$sql = "SELECT * FROM category WHERE valid=1 AND classify_id = $classify_id"; //修改成你要的SQL語法,WHERE:選取匹配指定條件的數據
 $result = $conn->query($sql); // query:引用資料 $conn:連結
 $total = $result->num_rows; //總共有幾筆
 $per_page = 10; //每頁顯示項目數量
 $page_count = CEIL($total / $per_page); // SQL中的取整函數:將最後結果的餘數取正數
 $start = ($p - 1) * $per_page; // 最開始從最0筆資料開始,所以(頁數-1)*每頁顯示項目數量
 
-if(isset($_GET["classify_id"])){ 
+if (isset($_GET["classify_id"])) {
   $classify_id = $_GET["classify_id"];
 
   $sql = "SELECT * FROM category WHERE valid=1 AND classify_id = $classify_id
@@ -41,13 +42,13 @@ if(isset($_GET["classify_id"])){
     LIMIT $start,$per_page"; //LIMIT 限制傳回的資料筆數
 
   $result = $conn->query($sql);
-  $category_count = $result->num_rows;
+  $category_count = $result->num_rows; //總共有幾筆
   $rows = $result->fetch_all(MYSQLI_ASSOC);
-  $total = $result->num_rows;
   $page_count = CEIL($total / $per_page);
   $start = ($p - 1) * $per_page;
-}else{
-  header("location: classify.php");
+  
+} else {
+  header("location: admin-classify.php");
 }
 
 
@@ -84,14 +85,19 @@ if(isset($_GET["classify_id"])){
   <div class="container d-flex ">
     <div class="justify-content-between mx-auto">
       <div class="text-start">
-        <a class="btn btn-info text-white me-3 mt-3" href="classify.php?type=1&classify_id=<?= $classify_id ?>&p=<?= $p ?>">回總分類列表</a>
+        <a class="btn btn-info text-white me-3 mt-3" href="admin-classify.php?type=1&classify_id=<?= $classify_id ?>&p=<?= $p ?>">回總分類列表</a>
       </div>
+      <?php if (isset($_GET["classify_id"])) :?>
+        <div class="py-2">
+          <h1><?= $rows[0]["classify_name"] ?></h1>
+        </div>
+      <?php endif; ?>
       <div class="text-start">
         <div class="d-flex justify-content-between">
           <div class="text-start my-3">
-            <a class="btn btn-info text-white me-3 <?php if ($type == 1) echo "active" ?>" href="category.php?type=1&classify_id=<?= $classify_id ?>&p=<?= $p ?>">遞增</a>
-            <a class="btn btn-info text-white me-3 <?php if ($type == 2) echo "active" ?>" href="category.php?type=2&classify_id=<?= $classify_id ?>&p=<?= $p ?>">遞減</a>
-            <a class="btn btn-info text-white" href="category-doCreate.php?classify_id=<?= $classify_id ?>">新增類別</a>
+            <a class="btn btn-info text-white me-3 <?php if ($type == 1) echo "active" ?>" href="admin-category.php?type=1&classify_id=<?= $classify_id ?>&p=<?= $p ?>">遞增</a>
+            <a class="btn btn-info text-white me-3 <?php if ($type == 2) echo "active" ?>" href="admin-category.php?type=2&classify_id=<?= $classify_id ?>&p=<?= $p ?>">遞減</a>
+            <a class="btn btn-info text-white" href="admin-category-doCreate.php?classify_id=<?= $classify_id ?>">新增類別</a>
           </div>
           <div class="py-2 d-flex d-inline text-end my-3">
             共 <?= $total ?> 筆
@@ -114,8 +120,8 @@ if(isset($_GET["classify_id"])){
             foreach ($rows as $row) :
             ?>
               <tr class="align-middle text-center">
-                <td><a class="p-2" href='category-doDelete-program.php?id=<?= $row["id"] ?>'><i class="fa-solid fa-calendar-xmark"></i> 刪除</a></td>
-                <td><a class="p-2" href='category-edit.php?id=<?= $row["id"] ?>&classify_id=<?= $classify_id ?>'><i class="fa-solid fa-pen-to-square"></i> 編輯</a></td>
+                <td><a class="p-2" href='admin-category-doDelete-program.php?id=<?= $row["id"] ?>'><i class="fa-solid fa-calendar-xmark"></i> 刪除</a></td>
+                <td><a class="p-2" href='admin-category-edit.php?id=<?= $row["id"] ?>&classify_id=<?= $classify_id ?>'><i class="fa-solid fa-pen-to-square"></i> 編輯</a></td>
                 <td><?= $row["id"] ?></td>
                 <td><?= $row["category_name"] ?></td>
               </tr>
@@ -131,7 +137,7 @@ if(isset($_GET["classify_id"])){
             <?php for ($i = 1; $i <= $page_count; $i++) : ?>
               <li class="page-item 
                     <?php if ($i == $p) echo "active"; ?>">
-                <a class="page-link" href="category.php?p=<?= $i ?>&type=<?= $type ?>"><?= $i ?></a>
+                <a class="page-link" href="admin-category.php?p=<?= $i ?>&type=<?= $type ?>"><?= $i ?></a>
               </li>
             <?php endfor; ?>
           </ul>

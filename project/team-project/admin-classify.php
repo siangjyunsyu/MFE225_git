@@ -1,5 +1,5 @@
 <?php
-require_once("../db-connect.php");
+require_once("../admin-db-connect.php");
 
 if (!isset($_GET["p"])) {
   $p = 1;
@@ -38,6 +38,9 @@ $sql = "SELECT * FROM classify WHERE valid=1 ORDER BY $order LIMIT $start,$per_p
 $result = $conn->query($sql);
 $user_count = $result->num_rows;
 $rows = $result->fetch_all(MYSQLI_ASSOC);
+
+
+
 ?>
 
 <!doctype html>
@@ -72,9 +75,9 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
     <div class="text-start">
       <div class="d-flex justify-content-between my-3">
         <div class="text-start">
-          <a class="btn btn-info text-white me-2 <?php if ($type == 1) echo "active" ?>" href="classify.php?p=<?= $p ?>&type=1">遞增</a>
-          <a class="btn btn-info text-white mx-2 <?php if ($type == 2) echo "active" ?>" href="classify.php?p=<?= $p ?>&type=2">遞減</a>
-          <a class="btn btn-info text-white mx-2" href="classify-doCreate.php">新增總分類</a>
+          <a class="btn btn-info text-white me-2 <?php if ($type == 1) echo "active" ?>" href="admin-classify.php?p=<?= $p ?>&type=1">遞增</a>
+          <a class="btn btn-info text-white mx-2 <?php if ($type == 2) echo "active" ?>" href="admin-classify.php?p=<?= $p ?>&type=2">遞減</a>
+          <a class="btn btn-info text-white mx-2" href="admin-classify-doCreate.php">新增總分類</a>
         </div>
         <div class="py-2 d-flex d-inline text-end">
           共 <?= $total ?> 筆
@@ -97,11 +100,11 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
           foreach ($rows as $row) :
           ?>
             <tr class="align-middle text-center">
-              <td><a href='classify-doDelete-program.php?id=<?= $row["id"] ?>'><i class="fa-solid fa-calendar-xmark"></i> 刪除</a></td>
-              <td><a href='classify-edit.php?id=<?= $row["id"] ?>'><i class="fa-solid fa-pen-to-square"></i> 編輯</a></td>
+              <td><a href='admin-classify-doDelete-program.php?id=<?= $row["id"] ?>'><i class="fa-solid fa-calendar-xmark"></i> 刪除</a></td>
+              <td><a href='admin-classify-edit.php?id=<?= $row["id"] ?>'><i class="fa-solid fa-pen-to-square"></i> 編輯</a></td>
               <td><?= $row["id"] ?></td>
               <td><?= $row["classify_name"] ?></td>
-              <td><a class="btn btn-info text-white align-middle" href="category.php?type=1&classify_id=<?= $row["id"] ?>">詳細</a></td>
+              <td><a class="btn btn-info text-white align-middle" href="admin-category.php?type=1&classify_id=<?= $row["id"] ?>">詳細</a></td>
             </tr>
           <?php endforeach; ?>
         <?php else : ?>
@@ -115,7 +118,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
           <?php for ($i = 1; $i <= $page_count; $i++) : ?>
             <li class="page-item 
               <?php if ($i == $p) echo "active"; ?>">
-              <a class="page-link" href="classify.php?p=<?= $i ?>&type=<?= $type ?>"><?= $i ?></a>
+              <a class="page-link" href="admin-classify.php?p=<?= $i ?>&type=<?= $type ?>"><?= $i ?></a>
             </li>
           <?php endfor; ?>
         </ul>

@@ -1,20 +1,20 @@
 <?php
     if(!isset($_GET["id"]))
     {
-        header("location: 404.php");
+        header("location: admin-404.php");
     }
 
     $id=$_GET["id"];
 
 
-    require_once("../db-connect.php");
+    require_once("../admin-db-connect.php");
     $sql="SELECT * FROM classify WHERE id='$id'";
 
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();  
     if(!$row)
     {
-        header("location: 404.php");
+        header("location: admin-404.php");
     } 
 ?>
 
@@ -35,7 +35,7 @@
       <div class="container">
           <div class="row justify-content-center">
                 <div class="col-lg-4">
-                    <form action="updateClassify.php" method="post">
+                    <form action="admin-classifyUpdate.php" method="post">
                         <table class="table table-bordered">
                             <input type="hidden" name="id" value="<?=$row["id"]?>">
                             <tr>
@@ -48,7 +48,7 @@
                             </tr>
                         </table>
                         <div class="py-2">
-                            <a class="btn btn-info text-white" href="classify.php?id=<?=$row["id"]?>">取消編輯</a>
+                            <a class="btn btn-info text-white " href="admin-classify.php?id=<?=$row["id"]?>">取消編輯</a>
                             <button type="submit" class="btn btn-info text-white">儲存</button>                            
                         </div>
                     </form>
