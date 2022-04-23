@@ -10,7 +10,7 @@
     if ($conn->query($sql) === TRUE) {
         echo "更新成功";
         $conn->close();
-        header("location: category.php?id=".$id);
+        header("location: category.php?type=1&id='$id'&classify_id='$classify_id'");
     } else {
         echo "更新資料錯誤: " . $conn->error;
         exit;

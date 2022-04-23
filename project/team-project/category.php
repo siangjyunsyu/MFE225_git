@@ -33,19 +33,24 @@ $per_page = 10; //每頁顯示項目數量
 $page_count = CEIL($total / $per_page); // SQL中的取整函數:將最後結果的餘數取正數
 $start = ($p - 1) * $per_page; // 最開始從最0筆資料開始,所以(頁數-1)*每頁顯示項目數量
 
+if(isset($_GET["classify_id"])){ 
+  $classify_id = $_GET["classify_id"];
 
-$classify_id = $_GET["classify_id"];
+  $sql = "SELECT * FROM category WHERE valid=1 AND classify_id = $classify_id
+    ORDER BY $order 
+    LIMIT $start,$per_page"; //LIMIT 限制傳回的資料筆數
 
-$sql = "SELECT * FROM category WHERE valid=1 AND classify_id = $classify_id
-  ORDER BY $order 
-  LIMIT $start,$per_page"; //LIMIT 限制傳回的資料筆數
+  $result = $conn->query($sql);
+  $category_count = $result->num_rows;
+  $rows = $result->fetch_all(MYSQLI_ASSOC);
+  $total = $result->num_rows;
+  $page_count = CEIL($total / $per_page);
+  $start = ($p - 1) * $per_page;
+}else{
+  header("location: classify.php");
+}
 
-$result = $conn->query($sql);
-$category_count = $result->num_rows;
-$rows = $result->fetch_all(MYSQLI_ASSOC);
-$total = $result->num_rows;
-$page_count = CEIL($total / $per_page);
-$start = ($p - 1) * $per_page;
+
 
 ?>
 

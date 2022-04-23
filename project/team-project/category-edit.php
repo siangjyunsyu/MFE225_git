@@ -9,7 +9,6 @@
     $classify_id = $_GET["classify_id"];
     
     $sql="SELECT * FROM category WHERE id='$id'";
-
     $result = $conn->query($sql);
     $row = $result->fetch_assoc();  
     if(!$row)
@@ -43,7 +42,7 @@
                                 <td><?=$row["id"]?></td>                            
                             </tr>
                             <tr>
-                                <th>類別名稱</th>
+                                <th>類別名稱</th>                                
                                 <td><input class="form-control" name="category_name" type="text" value="<?=$row["category_name"]?>"></td>                            
                             </tr>
                         </table>

@@ -29,7 +29,8 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
   <?php if ($category_count > 0) : ?>
     <?php foreach ($rows as $row) : ?>
       <div class="container">
-        <form action="category-doCreate-program.php" method="post">
+        <form action="category-doCreate-program.php" method="post"> 
+          <!-- 因為用POST傳送表單到下一層category-doCreate-program.php , 所以在第39行要加上<input type="hidden"...> 讓它可以把classify_id值可以傳過去，然後接到值 -->
           <div class="d-flex mt-3">
             <div class="mb-2 col-auto">
               <label class="me-3" for="name">類別名稱</label>
@@ -40,7 +41,7 @@ $rows = $result->fetch_all(MYSQLI_ASSOC);
           <div class="py-2">
             <button type="button" class="btn btn-info text-white me-3">
               <a class="text-decoration-none text-white" href="category.php?id=<?= $row["id"] ?>&classify_id=<?=$classify_id?>">取消新增</a></button>
-            <button type="submit" class="btn btn-info text-white">儲存</button>
+            <button type="submit" class="btn btn-info text-white"><a href="category.php?id=<?=$row["id"]?>&classify_id=<?=$classify_id?>">儲存</a></button>
           </div>
         </form>
       </div>

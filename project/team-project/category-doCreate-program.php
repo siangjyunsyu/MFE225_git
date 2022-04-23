@@ -1,5 +1,6 @@
 <?php
     require_once("../db-connect.php"); 
+    $classify_id = $_POST["classify_id"]; // 因為在上一層category-doCreate.php用POST將classify_id值傳過來，所以要再用一個POST接，並在第18-19行將classify_id值寫入
 
     if(!isset($_POST["category_name"]))
     {
@@ -14,8 +15,8 @@
         return;
     }
 
-    $sql_category="INSERT INTO category (category_name)
-    VALUES ('$category_name')";
+    $sql_category="INSERT INTO category (category_name,classify_id)
+    VALUES ('$category_name','$classify_id')";
     
     if ($conn->query($sql_category) === TRUE) 
         {
@@ -35,5 +36,6 @@
         // echo "<script> location.href = document.referrer; </script>" 
         // JS語法：獲取上一個訪問頁面的URL地址document.referrer實現
         
-        header("location: category.php");
+        header("location: category.php?classify_id='$classify_id'");
+        // print_r($classify_id)
 ?>
