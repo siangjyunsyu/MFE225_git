@@ -1,0 +1,14 @@
+ <?php if ($p != 1) : ?>
+            <li class="page-item"><a class="page-link" href="miu_product.php?p=<?= $p - 2 ?>&type=<?= $type ?>"><</a>
+            </li>
+        
+
+          <li class="page-item "><a class="page-link" href="miu_product.php?p=<?= $p-1 ?>"><?= $p-1 ?></a></li> 
+          <?php endif; ?>
+          <li class="page-item active"><a class="page-link" href="miu_product.php?p=<?= $p ?>"><?= $p ?></a></li>
+          <?php if ($p+1 <= $page_count): ?>
+          <li class="page-item "><a class="page-link" href="miu_product.php?p=<?= $p+1 ?>"><?= $p+1 ?></a></li>
+          <?php endif; ?>
+          <?php if($p+2 <= $page_count): ?>
+          <li class="page-item "><a class="page-link" href="miu_product.php?p=<?= $p + 2 ?>&type=<?= $type ?>">></a></li>
+          <?php endif; ?>
